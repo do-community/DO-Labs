@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  web:
+    image: ysharma859/emojivoto-web:v12
+    environment:
+      - WEB_PORT=8080
+      - EMOJISVC_HOST=emoji-svc:8080
+      - VOTINGSVC_HOST=voting-svc:8080
+      - INDEX_BUNDLE=dist/index_bundle.js
+      - DEPLOYED_REGION=BLR
+      - TTL=60
+    ports:
+      - "8080:8080"
+    depends_on:
+      - voting-svc
+      - emoji-svc
+
+  vote-bot:
+    image: ysharma859/emojivoto-web:v12
+    entrypoint: emojivoto-vote-bot
+    environment:
+      - WEB_HOST=web:8080
+      - TTL=60
+    depends_on:
+      - web
+
+  emoji-svc:
+    image: ysharma859/emojivoto-emoji-svc:v12
+    environment:
+      - GRPC_PORT=8080
+      - TTL=60
+    ports:
+      - "8081:8080"
+
+  voting-svc:
+    image: ysharma859/emojivoto-voting-svc:v12
+    environment:
+      - GRPC_PORT=8080
+      - TTL=60
+    ports:
+      - "8082:8080"

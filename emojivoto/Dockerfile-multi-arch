@@ -1,0 +1,55 @@
+ARG svc_name
+
+# go build stage
+FROM --platform=$BUILDPLATFORM golang:1.24.0 as golang
+WORKDIR /emojivoto-build
+
+# install protobuf
+RUN apt-get update && apt-get install -y protobuf-compiler
+RUN go install github.com/golang/protobuf/protoc-gen-go@latest
+
+# cache go dependencies
+COPY go.mod go.sum .
+RUN go mod download
+
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+ENV PATH="/root/go/bin:${PATH}"
+RUN protoc-gen-go-grpc --version
+
+# compile
+COPY . .
+ARG TARGETARCH
+ARG svc_name
+RUN GOARCH=$TARGETARCH make -C $svc_name clean protoc compile
+
+# webpack stage
+FROM --platform=$BUILDPLATFORM node:18-buster as webpack-bundle
+WORKDIR /emojivoto-build
+COPY . .
+RUN make -C emojivoto-web clean webpack package-web
+
+FROM golang as build-emojivoto-emoji-svc
+FROM golang as build-emojivoto-voting-svc
+FROM golang as build-emojivoto-web
+COPY --from=webpack-bundle /emojivoto-build/emojivoto-web/target/ /emojivoto-build/emojivoto-web/target/
+
+FROM build-$svc_name as build
+
+# runtime image
+FROM debian:buster-20200514-slim
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        curl \
+        dnsutils \
+        iptables \
+        jq \
+        nghttp2 \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG svc_name
+COPY --from=build /emojivoto-build/$svc_name/target/ /usr/local/bin/
+
+# ARG variables are not available for ENTRYPOINT
+ENV SVC_NAME $svc_name
+WORKDIR /usr/local/bin
+ENTRYPOINT $SVC_NAME
