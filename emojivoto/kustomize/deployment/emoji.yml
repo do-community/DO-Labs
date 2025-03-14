@@ -38,7 +38,7 @@ spec:
           value: "NYC"
         - name: TTL
           value: "60"
-        image: ysharma859/emojivoto-emoji-svc:v13
+        image: ysharma859/emojivoto-emoji-svc:v12
         imagePullPolicy: Always
         name: emoji-svc
         ports:
