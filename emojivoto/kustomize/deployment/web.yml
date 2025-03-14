@@ -42,7 +42,7 @@ spec:
           value: "NYC"
         - name: TTL
           value: "60"
-        image: ysharma859/emojivoto-web:v12
+        image: ysharma859/emojivoto-web:v13
         # imagePullPolicy: Always
         name: web-svc
         ports:
