@@ -39,7 +39,7 @@ spec:
         - name: TTL
           value: "60"
         image: ysharma859/emojivoto-emoji-svc:v13
-        # imagePullPolicy: Always
+        imagePullPolicy: Always
         name: emoji-svc
         ports:
         - containerPort: 8080

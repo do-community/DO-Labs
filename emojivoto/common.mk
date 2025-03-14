@@ -18,10 +18,10 @@ protoc:
 package: protoc compile build-container
 
 build-container:
-	docker build .. -t "ysharma859/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name) --platform=linux/arm64
+	docker build .. -t "ysharma859/$(svc_name):v13" --build-arg svc_name=$(svc_name) --platform=linux/arm64
 
 build-multi-arch:
-	docker buildx build .. -t "ysharma859/$(svc_name):$(IMAGE_TAG)" --build-arg svc_name=$(svc_name) \
+	docker buildx build .. -t "ysharma859/$(svc_name):v13" --build-arg svc_name=$(svc_name) \
 		-f ../Dockerfile-multi-arch --platform linux/amd64,linux/arm64,linux/arm/v7 --push
 
 compile:

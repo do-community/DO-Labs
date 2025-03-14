@@ -43,7 +43,7 @@ spec:
         - name: TTL
           value: "60"
         image: ysharma859/emojivoto-web:v13
-        # imagePullPolicy: Always
+        imagePullPolicy: Always
         name: web-svc
         ports:
         - containerPort: 8080

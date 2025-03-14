@@ -39,7 +39,7 @@ spec:
         - name: TTL
           value: "60"
         image: ysharma859/emojivoto-voting-svc:v13
-        # imagePullPolicy: Always
+        imagePullPolicy: Always
         name: voting-svc
         ports:
         - containerPort: 8080
