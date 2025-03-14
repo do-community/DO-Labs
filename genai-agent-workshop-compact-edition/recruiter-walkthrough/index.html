@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Recruiter Assistant</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" href="assets/digitalocean.png" type="image/x-icon" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #0061EB, #031B4E);
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+
+      .center-div {
+        text-align: center;
+        padding: 20px;
+        border: 2px solid #E5E8ED;
+        border-radius: 12px;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 1.5rem;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .center-div:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center-div">My Test Recruiter Assistant</div>
+    <script
+      async
+      src="https://<unique agent url>.ondigitalocean.app/static/chatbot/widget.js"
+      data-agent-id="<data-agent-id>"
+      data-chatbot-id="<data-chatbot-id>"
+      data-name="recruiter-assistant Chatbot"
+      data-primary-color="#031B4E"
+      data-secondary-color="#E5E8ED"
+      data-button-background-color="#0061EB"
+      data-starting-message="Hello! How can I help you with your recruitment needs today?"
+      data-logo="/static/chatbot/icons/default-agent.svg"
+    ></script>
+  </body>
+</html>
