@@ -116,6 +116,7 @@ export default class Vote extends React.Component {
       let region = this.state.region;
       let contents = (
         <div>
+          <h1>New Version Of App Is Available</h1>
           <h1>EMOJI VOTE / {region.region}</h1>
           <p>Tap to vote for your favorite emoji below</p>
           {this.renderLeaderboardLink()}

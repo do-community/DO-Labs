@@ -59,6 +59,7 @@ metadata:
   namespace: emojivoto
   annotations:
     # service.beta.kubernetes.io/do-loadbalancer-network: "INTERNAL"
+    service.beta.kubernetes.io/do-loadbalancer-name: "argo-yash-test-blr"
     service.beta.kubernetes.io/do-loadbalancer-size-unit: "2"
     service.beta.kubernetes.io/do-loadbalancer-override-health-check: "true"
     service.beta.kubernetes.io/do-loadbalancer-healthcheck-port: "80"
