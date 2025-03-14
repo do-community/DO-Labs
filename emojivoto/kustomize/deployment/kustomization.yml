@@ -4,3 +4,33 @@ resources:
 - emoji.yml
 - voting.yml
 - vote-bot.yml
+
+patchesStrategicMerge:
+- |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: web  # Change this for each deployment (web, emoji, voting, etc.)
+    labels:
+      linkerd.io/inject: enabled
+- |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: emoji
+    labels:
+      linkerd.io/inject: enabled
+- |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: voting
+    labels:
+      linkerd.io/inject: enabled
+- |-
+  apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: vote-bot
+    labels:
+      linkerd.io/inject: enabled
