@@ -1,0 +1,122 @@
+# Production-ready values.yaml for GPU Operator
+
+platform:
+  openshift: false
+
+nfd:
+  enabled: true
+  nodefeaturerules: false
+
+psp:
+  enabled: true
+
+cdi:
+  enabled: true
+  default: true
+
+mig:
+  strategy: single
+
+driver:
+  enabled: false  
+
+toolkit:
+  enabled: false 
+
+devicePlugin:
+  enabled: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+dcgm:
+  enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+dcgmExporter:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 15s
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+gfd:
+  enabled: true
+  env:
+    - name: GFD_SLEEP_INTERVAL
+      value: 60s
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+migManager:
+  enabled: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+operator:
+  defaultRuntime: containerd  # Adjust this if you're using a different runtime
+  resources:
+    limits:
+      cpu: 500m
+      memory: 350Mi
+    requests:
+      cpu: 200m
+      memory: 100Mi
+  logging:
+    level: info
+
+node-feature-discovery:
+  enableNodeFeatureApi: true
+  worker:
+    tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+  master:
+    tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+
+# Global settings
+imagePullPolicy: Always
+priorityClassName: system-node-critical

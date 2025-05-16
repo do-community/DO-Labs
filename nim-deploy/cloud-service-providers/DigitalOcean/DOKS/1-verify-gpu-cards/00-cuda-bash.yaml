@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cuda-runtime-daemonset
+spec:
+  selector:
+    matchLabels:
+      name: cuda-runtime
+  template:
+    metadata:
+      labels:
+        name: cuda-runtime
+    spec:
+      nodeSelector:
+        doks.digitalocean.com/gpu-brand: nvidia
+      containers:
+        - name: cuda-container
+          image: nvcr.io/nvidia/cuda:12.6.0-cudnn-runtime-ubuntu22.04
+          command: ["/bin/bash"]
+          args: 
+            - "-c"
+            - |
+              echo "Node: $(hostname)"
+              echo "Running nvidia-smi:"
+              nvidia-smi
+              echo "\nRunning nvidia-smi -L:"
+              nvidia-smi -L
+              echo "\nGPU info printed above. Container is now exiting."
+              # Sleep for a long time instead of exiting
+              sleep infinity
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule

@@ -1,0 +1,30 @@
+image:
+  # Adjust to the actual location of the image and version you want
+  repository: nvcr.io/nim/meta/llama-3.1-70b-instruct
+  tag: 1.1.2
+imagePullSecrets:
+  - name: registry-secret
+model:
+  name: meta/llama-3.1-70b-instruct
+  ngcAPISecret: ngc-api
+# NVIDIA recommends using an NFS-style read-write-many storage class.
+# All nodes will need to mount the storage. In this example, we assume a storage class exists name "smb".
+persistence:
+  enabled: true
+  existingClaim: "my-nim-nim-llm" # Remove it if you do not have an existing PVC share 
+  size: 200Gi
+  accessMode: ReadWriteMany
+  storageClass: smb
+  annotations:
+    helm.sh/resource-policy: "keep"
+# This should match `multiNode.gpusPerNode`
+resources:
+  limits:
+    nvidia.com/gpu: 1
+multiNode:
+  enabled: true
+  workers: 4
+  gpusPerNode: 1
+# Downloading the model will take quite a long time. Give it as much time as ends up being needed.
+startupProbe:
+  failureThreshold: 1500

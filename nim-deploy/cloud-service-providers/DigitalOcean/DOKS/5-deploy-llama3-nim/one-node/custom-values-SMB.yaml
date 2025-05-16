@@ -1,0 +1,21 @@
+image:
+  # Adjust to the actual location of the image and version you want
+  repository: nvcr.io/nim/meta/llama-3.1-8b-instruct
+  tag: 1.1.2
+imagePullSecrets:
+  - name: registry-secret
+model:
+  name: meta/llama-3.1-8b-instruct # Should reflect the name of the model
+  ngcAPISecret: ngc-api
+persistence:
+  enabled: true
+  storageClass: smb
+  accessMode: ReadWriteMany
+  size: 50Gi 
+  annotations:
+    helm.sh/resource-policy: keep
+statefulSet:
+    enabled: true
+resources:
+  limits:
+    nvidia.com/gpu: 1

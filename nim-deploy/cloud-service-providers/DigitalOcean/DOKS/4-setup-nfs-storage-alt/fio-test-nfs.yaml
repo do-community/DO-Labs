@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fio-benchmark-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: nfs-client
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio-benchmark
+spec:
+  containers:
+  - name: fio
+    image: nixery.dev/shell/fio
+    command: ["/bin/sh", "-c"]
+    args:
+    - |
+      echo "Starting random I/O test..."
+      fio --name=benchmark --filename=/mnt/smb/test_file --size=1G --rw=randrw --bs=4k --direct=1 --numjobs=4 --time_based --runtime=60 --group_reporting
+      echo "Random I/O test completed."
+      echo "Starting sequential I/O test..."      
+      fio --name=seq_test --filename=/mnt/smb/seq_file --size=1G --rw=readwrite --bs=1M --direct=1 --numjobs=1 --time_based --runtime=60 --group_reporting
+      echo "Sequential I/O test completed."
+    volumeMounts:
+    - name: smb-volume
+      mountPath: /mnt/smb
+  volumes:
+  - name: smb-volume
+    persistentVolumeClaim:
+      claimName: fio-benchmark-pvc
+  restartPolicy: Never
