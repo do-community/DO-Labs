@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nim-llm-monitor
+  namespace: kube-prometheus-stack
+  labels:
+    release: kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nim-llm
+  namespaceSelector:
+    matchNames:
+      - nim
+  endpoints:
+  - port: http-openai
+    path: /metrics
+    interval: 10s
