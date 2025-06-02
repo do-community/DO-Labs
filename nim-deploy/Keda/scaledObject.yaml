@@ -1,0 +1,21 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: nim-autoscaler
+  namespace: nim
+spec:
+  scaleTargetRef:
+    kind: StatefulSet
+    name: my-nim
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  pollingInterval: 5  
+  cooldownPeriod: 20  
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://kube-prometheus-stack-prometheus.kube-prometheus-stack.svc.cluster.local:9090
+        metricName: num_requests_running
+        threshold: "0.5"
+        query: |
+          sum(rate(num_requests_running{model_name="/tmp/meta--llama-3.1-8b-instruct-mtezcayp"}[1m]))
