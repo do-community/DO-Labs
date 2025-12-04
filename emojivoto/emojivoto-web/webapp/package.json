@@ -6,8 +6,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "path": "^0.12.7",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^19.1.2",
+    "react-dom": "^19.1.2",
     "react-router-dom": "^5.1.2",
     "whatwg-fetch": "^3.0.0"
   },
